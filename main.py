@@ -2,7 +2,6 @@ import pygame
 import Assets.Scripts.framework as framework
 import Assets.Scripts.background as backg
 import Assets.Scripts.bg_particles as bg_particles
-import Assets.Scripts.wave as wave
 import Assets.Scripts.Sword as Sword
 import Assets.Scripts.grass as g
 import math
@@ -124,11 +123,16 @@ def game_loop(level):
     font = pygame.font.Font("./Assets/Fonts/jayce.ttf", 30)
     font2 = pygame.font.Font("./Assets/Fonts/jayce.ttf", 25)
     font3 = pygame.font.Font("./Assets/Fonts/jayce.ttf", 13)
+    font4 = pygame.font.Font("./Assets/Fonts/jayce.ttf", 20)
+    bfont = pygame.font.Font("./Assets/Fonts/jayce.ttf", 50)
     #Texts
-    tutorial_texts = ["Winja! We are in a crisis ", "Winter is a season of joy ", "It is the time of sharing. But... ", "Winter has been swallowed by evil", "Winter is now against Christmas ", "They have stolen our gifts ", "Only  You  Winja  Can  Save", "Christmas!", "Save The Presents At Any Cost ", "WASD for movement", "Space To Jump", "K or Left-Click to ki.?!", "To Bring Peace", "Remeber! You can Cycle Through", "The Map by Falling", "But The Gifts Can Not!", "Destroy The Winter Sprites And...", "Collect All The Presents", "All The Best Winja" ]
+    tutorial_texts = ["Comali! We are in a crisis ", "Winter is a season where Everyone ", "remains cozy at their homes", "With Their Gifts But... ", "Winter has been swallowed by evil", "Winter is now against Christmas ", "They have stolen our gifts ", "Only  You  Comali  Can  Save", "Christmas!", "It is freezing cold outside", "Your body temperature can't fall", "below 32°F else you will ", "not feel cozy and freeze", "Save The Presents At Any Cost ", "W.A.S.D for movement", "Space To Jump", "K or Left-Click to ki.?!", "To Bring Peace", "Remeber! You can Cycle Through", "The Map by Falling", "But The Gifts Can Not!", "Destroy The Winter Sprites And...", "Collect All The Presents", "All The Best Winja" ]
     current_tutorial_text = 0
-    speech_cooldown = 5000
+    speech_cooldown = 4000
     speech_last_update = 0
+    level_speech_cooldown = pygame.time.get_ticks() + 2000
+    level_speech_last_update = pygame.time.get_ticks()
+    speak_level = True
     #SoundEffects
     explosion = pygame.mixer.Sound("./Assets/Music/explosion.wav")
     explosion.set_volume(0.7)
@@ -138,6 +142,7 @@ def game_loop(level):
     jump.set_volume(0.5)
     pickup = pygame.mixer.Sound("./Assets/Music/pickup.wav")
     pickup.set_volume(0.6)
+    death = pygame.mixer.Sound("./Assets/Music/death.wav")
     #Player
     player_idle_animation = []
     player_run_animation = []
@@ -289,6 +294,9 @@ def game_loop(level):
                             sparks.append(framework.Spark([gift.get_rect().x - scroll[0] + gift.get_width()//2, gift.get_rect().y - scroll[1] + gift.get_height()//2],math.radians(random.randint(0,360)), random.randint(2, 5), gift_particles[gift.get_pos()], 2, 2))
                         gifts.pop(pos)
                         number_of_gifts_found += 1
+                        player.health += 8
+                        if player.health >= 100:
+                            player.health = 100
         #Movement of grass
         if time - grass_last_update > grass_cooldown:
             for grass in grasses:
@@ -360,8 +368,14 @@ def game_loop(level):
                 display.blit(cloud, (player.get_rect().x - scroll[0] + 5, player.get_rect().y - scroll[1] - 40))
                 draw_text("Brr... ", font3, (0, 0, 0), player.get_rect().x + 32 - scroll[0], player.get_rect().y - scroll[1] - 30, display)
                 draw_text("Cold!!!", font3, (0,0,0), player.get_rect().x + 32 - scroll[0], player.get_rect().y - scroll[1] - 20, display)
-        #Thermometer
-        draw_text("Hg", font, (255,255,255), 14, 200, display)
+            #Thermometer
+            draw_text("98.6°F", font3, (255,255,255), 40, 20, display)
+            draw_text("65.3°F", font3, (255,255,255), 40, 100, display)
+            draw_text("32°F", font3 , (255,255,255), 40, 190, display)
+            pygame.draw.circle(display, (55,64,60), (28, 210), 12)
+            pygame.draw.circle(display, (255,0,0), (28, 210), 10)
+            draw_text("Hg", font, (255,255,255), 14, 220, display)
+            draw_text("Cozy-Coefficient", font3, (255,255,255), 0, 0, display)
         #Background Particles
         bg_particle_effect.recursive_call(time, display, scroll, dt)
         for event in pygame.event.get():
@@ -388,7 +402,6 @@ def game_loop(level):
                 spark.draw(display)
                 if not spark.alive:
                     sparks.pop(i)
-
         #Checking whether player has died
         if level == "tutorial.txt":
             pygame.draw.rect(display, (0,0,0), pygame.rect.Rect(0,200,600,200))
@@ -401,8 +414,19 @@ def game_loop(level):
                     run = False
                 speech_last_update = time
             display.blit(santa, (10,220))
+        elif level == "game_over.txt":
+            draw_text("GAME OVER!", bfont, (255,255,255), 120, 40, display)
+            draw_text("A Game By JayJan", font, (180,0,0), 190, 90, display)
+            pygame.draw.rect(display, (0,0,0), pygame.rect.Rect(0,200,600,200))
+            display.blit(santa, (10,220))
+            draw_text("ThankYou for saving Christmas Comali! ", font4, (255,255,255), 114, 210, display)
+            draw_text("You Made This Christmas Cozy Again!", font4, (255,255,255), 124, 230, display)
+            draw_text("Or Shall I say Cozy_Comali Ho Ho Ho Ho Ho Ho Ho", font4, (255,0,0), 84, 260, display)
         else:
             if player.health <=0 :
+                if just_died:
+                    death.play()
+                    just_died = False
                 player.alive = False
                 draw_text("Death Is Just The Beginning ", font, (200,0,0), 70, 100, display )
                 draw_text("Space To Restart ", font, (230, 195,105), 130, 150, display)
@@ -413,6 +437,8 @@ def game_loop(level):
                 #Checking whether the player has completed the level
                 if drones == [] and pollies == [] and gifts == []:
                     run = False
+            if speak_level:
+                draw_text(level[0:len(level)-5] + " : " + level[len(level)-5:len(level)-4], font, (255,255,255), 390, 40, display)
         surf = pygame.transform.scale(display, (s_width, s_height))
         screen.blit(surf, (0,0))
         pygame.display.update()
@@ -424,8 +450,8 @@ def main_loop():
     #0 -> Player has completed the level
     #1 -> Player has closed the Game
     #2 -> Player has died
-    #levels = ["tutorial.txt", "level1.txt", "level2.txt", "level3.txt", "level4.txt", "level5.txt", "game_over.txt"]
-    levels = ["level1.txt", "level2.txt", "level3.txt", "level4.txt"]
+    levels = ["tutorial.txt", "level1.txt", "level2.txt", "level3.txt", "level4.txt", "level5.txt", "game_over.txt"]
+    #levels = ["level1.txt", "level2.txt"]
     current_level = 0
     #Music
     pygame.mixer.music.load("./Assets/Music/WinjaBgMusic.wav")
