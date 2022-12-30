@@ -74,15 +74,10 @@ class Player():
         return collision_types
 
     def draw_health_bar(self, display):
-        #self.health = 50
-        '''if self.health != 0:
-            ratio = 100 / self.health
-        else:
-            ratio = 100'''
         ratio = self.health / 100
-        pygame.draw.rect(display, (99,155,255), (19, 19, 17  , 184))
-        pygame.draw.rect(display, (255,0,0), (20, 20, 15  , 180))
-        pygame.draw.rect(display, (55,64,60), (20,  20 + 180 * (1 - ratio) , 15  , 180 - 180 * (1 - ratio) ))
+        pygame.draw.rect(display, (104,94,103), (19, 19, 17  , 184))
+        pygame.draw.rect(display, (55,64,60), (22, 20, 10  , 180))
+        pygame.draw.rect(display, (255,0,0), (22,  20 + 180 * (1 - ratio) , 10  , 180 - 180 * (1 - ratio) ))
 
     def move(self, tiles, time, dt):
         keys = pygame.key.get_pressed()

@@ -114,11 +114,16 @@ def game_loop(level):
     arrow = arrow_img.copy()
     arrow = pygame.transform.scale(arrow_img, (arrow_img.get_width()*2, arrow_img.get_height() * 2))
     arrow.set_colorkey((0,0,0))
+    cloud_img = pygame.image.load("./Assets/Sprites/cloud.png").convert_alpha()
+    cloud = cloud_img.copy()
+    cloud = pygame.transform.scale(cloud_img, (cloud_img.get_width() * 2, cloud_img.get_height()*2))
+    cloud.set_colorkey((0,0,0))
     #Map
     map = framework.Map("./Assets/Maps/"+level, tiles)
     #Fonts
     font = pygame.font.Font("./Assets/Fonts/jayce.ttf", 30)
     font2 = pygame.font.Font("./Assets/Fonts/jayce.ttf", 25)
+    font3 = pygame.font.Font("./Assets/Fonts/jayce.ttf", 13)
     #Texts
     tutorial_texts = ["Winja! We are in a crisis ", "Winter is a season of joy ", "It is the time of sharing. But... ", "Winter has been swallowed by evil", "Winter is now against Christmas ", "They have stolen our gifts ", "Only  You  Winja  Can  Save", "Christmas!", "Save The Presents At Any Cost ", "WASD for movement", "Space To Jump", "K or Left-Click to ki.?!", "To Bring Peace", "Remeber! You can Cycle Through", "The Map by Falling", "But The Gifts Can Not!", "Destroy The Winter Sprites And...", "Collect All The Presents", "All The Best Winja" ]
     current_tutorial_text = 0
@@ -350,6 +355,13 @@ def game_loop(level):
             #Sword
             p_sword.update((player.get_rect().x, player.get_rect().y), facing_left)
             p_sword.blit(display, scroll)
+            #Player Talking
+            if player.health < 70:
+                display.blit(cloud, (player.get_rect().x - scroll[0] + 5, player.get_rect().y - scroll[1] - 40))
+                draw_text("Brr... ", font3, (0, 0, 0), player.get_rect().x + 32 - scroll[0], player.get_rect().y - scroll[1] - 30, display)
+                draw_text("Cold!!!", font3, (0,0,0), player.get_rect().x + 32 - scroll[0], player.get_rect().y - scroll[1] - 20, display)
+        #Thermometer
+        draw_text("Hg", font, (255,255,255), 14, 200, display)
         #Background Particles
         bg_particle_effect.recursive_call(time, display, scroll, dt)
         for event in pygame.event.get():
@@ -413,7 +425,7 @@ def main_loop():
     #1 -> Player has closed the Game
     #2 -> Player has died
     #levels = ["tutorial.txt", "level1.txt", "level2.txt", "level3.txt", "level4.txt", "level5.txt", "game_over.txt"]
-    levels = ["level1.txt"]
+    levels = ["level1.txt", "level2.txt", "level3.txt", "level4.txt"]
     current_level = 0
     #Music
     pygame.mixer.music.load("./Assets/Music/WinjaBgMusic.wav")
