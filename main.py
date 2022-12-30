@@ -126,7 +126,7 @@ def game_loop(level):
     font4 = pygame.font.Font("./Assets/Fonts/jayce.ttf", 20)
     bfont = pygame.font.Font("./Assets/Fonts/jayce.ttf", 50)
     #Texts
-    tutorial_texts = ["Comali! We are in a crisis ", "Winter is a season where Everyone ", "remains cozy at their homes", "With Their Gifts But... ", "Winter has been swallowed by evil", "Winter is now against Christmas ", "They have stolen our gifts ", "Only  You  Comali  Can  Save", "Christmas!", "It is freezing cold outside", "Your body temperature can't fall", "below 32°F else you will ", "not feel cozy and freeze", "Save The Presents At Any Cost ", "W.A.S.D for movement", "Space To Jump", "K or Left-Click to ki.?!", "To Bring Peace", "Remeber! You can Cycle Through", "The Map by Falling", "But The Gifts Can Not!", "Destroy The Winter Sprites And...", "Collect All The Presents", "All The Best Winja" ]
+    tutorial_texts = ["Comali! We are in a crisis ", "Winter is a season where Everyone ", "remains cozy at their homes", "With Their Gifts But... ", "Winter has been swallowed by evil", "Winter is now against Christmas ", "They have stolen our gifts ", "Only  You  Comali  Can  Save", "Christmas!", "It is freezing cold outside", "Your body temperature can't fall", "below 32°F else you will ", "not feel cozy and freeze", "Save The Presents At Any Cost ", "W.A.S.D for movement", "Space To Jump", "K or Left-Click to ki.?!", "To Bring Peace", "Remeber! You can Cycle Through", "The Map by Falling", "But The Gifts Can Not!", "Destroy The Winter Sprites And...", "Collect All The Presents", "All The Best Comali" ]
     current_tutorial_text = 0
     speech_cooldown = 4000
     speech_last_update = 0
