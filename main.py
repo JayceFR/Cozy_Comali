@@ -456,7 +456,7 @@ def main_loop():
     #0 -> Player has completed the level
     #1 -> Player has closed the Game
     #2 -> Player has died
-    levels = ["tutorial.txt", "level1.txt", "level2.txt", "level3.txt", "level4.txt", "level5.txt", "level6.txt", "level7.txt" "game_over.txt"]
+    levels = ["tutorial.txt", "level1.txt", "level2.txt", "level3.txt", "level4.txt", "level5.txt", "level6.txt", "level7.txt", "game_over.txt"]
     #levels = ["level7.txt"]
     current_level = 0
     #Music
