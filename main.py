@@ -12,6 +12,12 @@ pygame.init()
 s_width = 1000
 s_height = 600
 screen = pygame.display.set_mode((s_width,s_height))
+icon_img = pygame.image.load("./Assets/Sprites/icon.png")
+icon = icon_img.copy()
+icon = pygame.transform.scale(icon_img, (icon_img.get_width()*2, icon_img.get_height()*2))
+icon.set_colorkey((0,0,0))
+pygame.display.set_caption("Cozy_Comali")
+pygame.display.set_icon(icon)
 display = pygame.Surface((s_width//2, s_height//2))
 def blit_tree(display, tree_img, tree_locs, scroll):
     tree_screen = display.copy()
@@ -450,8 +456,8 @@ def main_loop():
     #0 -> Player has completed the level
     #1 -> Player has closed the Game
     #2 -> Player has died
-    levels = ["tutorial.txt", "level1.txt", "level2.txt", "level3.txt", "level4.txt", "level5.txt", "game_over.txt"]
-    #levels = ["level1.txt", "level2.txt"]
+    levels = ["tutorial.txt", "level1.txt", "level2.txt", "level3.txt", "level4.txt", "level5.txt", "level6.txt", "level7.txt" "game_over.txt"]
+    #levels = ["level7.txt"]
     current_level = 0
     #Music
     pygame.mixer.music.load("./Assets/Music/WinjaBgMusic.wav")
